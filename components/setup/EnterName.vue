@@ -42,4 +42,10 @@ const { updateName } = useUserStore();
 
 </script>
 
-<style lang="scss" scope></style>
+<style lang="scss" scope>
+
+.name {
+    text-align: center;
+}
+
+</style>

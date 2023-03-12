@@ -1,5 +1,5 @@
 <template>
-    <div class="question-1 fade-in">
+    <div class="question-1 flex-col fade-in">
         <p>Question 1</p>
         <h1>[Category 1]</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</p>

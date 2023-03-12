@@ -1,5 +1,5 @@
 <template>
-    <div class="summary fade-in">
+    <div class="summary flex-col fade-in">
         <p>Summary</p>
     </div>
 </template>
