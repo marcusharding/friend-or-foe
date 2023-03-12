@@ -5,7 +5,8 @@ export const useUserStore = defineStore({
     state: () => {
       return {
         _host: false,
-        _name: ''
+        _name: '',
+        _partnerName: ''
       }
     },
     actions: {
@@ -14,10 +15,14 @@ export const useUserStore = defineStore({
         },
         updateName(value: string) {
             this._name = value;
+        },
+        updatePartnerName(value: string) {
+            this._partnerName = value
         }
     },
     getters: {
         host: state => state._host,
-        name: state => state._name
+        name: state => state._name,
+        partnerName: state => state._partnerName
     },
 });

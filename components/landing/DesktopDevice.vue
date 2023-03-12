@@ -1,9 +1,9 @@
 <template>
-    <div class="desktop-device flex-col">
-        <h1>[Love Powered]</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod erat turpis, et dapibus nunc fermentum malesuada.</p>
+    <div class="desktop-device flex-col fade-in">
+        <h1>Uh Oh!</h1>
+        <p>This is a mobile only game!</p>
+        <p>Please scan the below QR Code using a mobile device to begin.</p>
         <img :src="qrCode" alt="" />
-        <p>[www.verizon-lovepowered.com]</p>
     </div>
 </template>
 
@@ -16,18 +16,4 @@ const props = defineProps({
 
 </script>
 
-<style lang="scss" scoped>
-
-.desktop-device {
-
-    // Suppose this should be utility class really
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-
-    // Better way to handle every component being full height?
-    height: 100%;
-}
-
-</style>
+<style lang="scss" scoped></style>

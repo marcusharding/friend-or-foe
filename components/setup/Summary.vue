@@ -1,5 +1,5 @@
 <template>
-    <div class="summary">
+    <div class="summary fade-in">
         <p>Summary</p>
     </div>
 </template>

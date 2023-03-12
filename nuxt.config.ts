@@ -3,7 +3,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            title: 'compatibility-app',
+            title: 'friend-or-foe',
             htmlAttrs: {
                 lang: 'en'
             },
@@ -16,7 +16,7 @@ export default defineNuxtConfig({
             link: [
                 { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
             ]
-        },
+        }
     },
 
     css: [

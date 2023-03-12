@@ -44,8 +44,15 @@ io.on('connection', async socket => {
         }
     });
 
+    socket.on('user_name', name => {
+
+        // Broadcast entered name and relating socket id
+        io.sockets.emit('partner_name', name);
+    });
+
     // Socket disconnection
     socket.on('disconnect', reason => {
+
         console.log('socket disconnected: ', reason);
     });
 });

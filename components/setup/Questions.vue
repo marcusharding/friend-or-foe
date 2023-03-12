@@ -1,7 +1,7 @@
 <template>
-    <div class="question-3">
-        <p>Question 3</p>
-        <h1>[Category 3]</h1>
+    <div class="question-1 fade-in">
+        <p>Question 1</p>
+        <h1>[Category 1]</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</p>
     </div>
 </template>

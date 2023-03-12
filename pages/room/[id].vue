@@ -1,9 +1,7 @@
 <template>
-    <div class="room">
-        <RoomReady v-if="state === states.ROOM_READY" :socket="socket" />
-        <PartnerJoin v-if="state === states.WAITING_FOR_GUEST" :qrCode="qrCode" />
-        <RoomFull v-if="state === states.ROOM_FULL" />
-    </div>
+    <RoomReady v-if="state === states.ROOM_READY" :socketEmits="socketEmits" />
+    <PartnerJoin v-if="state === states.WAITING_FOR_GUEST" :qrCode="qrCode" />
+    <RoomFull v-if="state === states.ROOM_FULL" />
 </template>
 
 <script setup>
@@ -12,6 +10,7 @@
 import { io } from 'socket.io-client';
 import { ref, onMounted, watch } from 'vue';
 import { useUserStore } from '~/store/user';
+import { storeToRefs } from 'pinia';
 
 // Helpers
 import { generateQr } from '@/utils/helpers';
@@ -43,7 +42,9 @@ const states = computed(() => STATES );
 const roomId = computed(() => route.params.id );
 
 // Store
-const { updateHost } = useUserStore();
+const userStore = useUserStore();
+const { updateHost, updatePartnerName } = userStore;
+const { name } = storeToRefs(userStore);
 
 // Watchers
 watch(occupants, async (newAmount, oldAmount) => {
@@ -67,14 +68,26 @@ const createSocket = () => {
 
     socket.value = io(location.host);
 
-    socketEmits();
+    socketEmits('room_full_check', roomId.value);
     socketListeners();
 }
 
-const socketEmits = () => {
+const socketEmits = (event, data) => {
 
-    // Is room full
-    socket.value.emit('room_full_check', roomId.value);
+    switch( event ) {
+        
+        case 'room_full_check':
+            
+            // Is room full
+            socket.value.emit('room_full_check', data);
+            break;
+
+        case 'user_name':
+
+            // Emit user name
+            socket.value.emit('user_name', data);
+            break;
+    }
 }
 
 const socketListeners = () => {
@@ -93,6 +106,15 @@ const socketListeners = () => {
 
     // Room host
     socket.value.on('room_host', data => updateHost(data));
+
+    // Commit partner name to store
+    socket.value.on('partner_name', data => {
+
+        if ( data !== name.value ) {
+
+            updatePartnerName(data);
+        }
+    });
 }
 
 const joinRoom = () => {

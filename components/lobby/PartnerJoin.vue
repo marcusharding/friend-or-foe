@@ -1,11 +1,8 @@
 <template>
-    <div class="partner-join">
-        <h1>Header</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean feugiat nisl fringilla, efficitur diam ut.</p>
-        <div class="flex-col">
-            <img class="qr-code" :src="qrCode" alt="" />
-            <p>Waiting for partner to join...</p>
-        </div>
+    <div class="partner-join flex-col fade-in">
+        <h2>Waiting for guest to join...</h2>
+        <p>Please scan the below QR Code on another mobile device to join this session.</p>
+        <img class="qr-code" :src="qrCode" alt="" />
     </div>
 </template>
 
@@ -21,7 +18,7 @@ const props = defineProps({
 <style lang="scss" scoped>
 
 .qr-code {
-    width: 600px;
+    width: 250px;
     height: auto;
     max-width: 95%;
 }
