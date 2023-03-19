@@ -29,4 +29,14 @@ export const questions = [
             'Playing sports'
         ]
     },
+    {
+        id: 4,
+        questionHost: 'Test host',
+        questionGuest: 'Test guest',
+        options: [
+            'Reading',
+            'Watching movies',
+            'Playing sports'
+        ]
+    },
 ];

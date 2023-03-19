@@ -28,10 +28,6 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 
-.friend {
-
-}
-
 .image {
     margin: 40px 0;
     border-radius: 10px;

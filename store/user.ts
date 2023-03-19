@@ -3,11 +3,11 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore({
     id: 'user-store',
     state: () => {
-      return {
-        _host: false,
-        _name: '',
-        _partnerName: ''
-      }
+        return {
+            _host: false,
+            _name: '',
+            _partnerName: ''
+        }
     },
     actions: {
         updateHost(value: boolean) {

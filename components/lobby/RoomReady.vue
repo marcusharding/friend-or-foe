@@ -4,8 +4,11 @@
         :updateState="updateState"
         :socketEmits="socketEmits"
     />
-    <Instructions v-if="state === states.INSTRUCTIONS" />
-    <Questions v-if="state === states.QUESTIONS" />
+    <Instructions
+        v-if="state === states.INSTRUCTIONS"
+        :updateState="updateState"
+    />
+    <Questions v-if="state === states.QUESTIONS" :socketEmits="socketEmits" />
     <Summary v-if="state === states.SUMMARY" />
 </template>
 

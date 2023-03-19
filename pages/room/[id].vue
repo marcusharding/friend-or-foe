@@ -2,6 +2,8 @@
     <RoomReady v-if="state === states.ROOM_READY" :socketEmits="socketEmits" />
     <PartnerJoin v-if="state === states.WAITING_FOR_GUEST" :qrCode="qrCode" />
     <RoomFull v-if="state === states.ROOM_FULL" />
+    <Disconnected v-if="state === states.DISCONNECTED" />
+    <Loading v-if="state === states.LOADING" />
 </template>
 
 <script setup>
@@ -10,6 +12,7 @@
 import { io } from 'socket.io-client';
 import { ref, onMounted, watch } from 'vue';
 import { useUserStore } from '~/store/user';
+import { useQuestionsStore } from '~/store/questions';
 import { storeToRefs } from 'pinia';
 
 // Helpers
@@ -19,6 +22,11 @@ import { generateQr } from '@/utils/helpers';
 import RoomFull from '@/components/lobby/RoomFull.vue';
 import PartnerJoin from '@/components/lobby/PartnerJoin.vue';
 import RoomReady from '@/components/lobby/RoomReady.vue';
+import Disconnected from '@/components/lobby/Disconnected.vue';
+import Loading from '@/components/ui/Loading.vue';
+
+// Data
+import { questions } from '@/data/questions.js';
 
 // Nuxt
 const route = useRoute();
@@ -28,12 +36,13 @@ const STATES = {
     DISCONNECTED: -1,
     WAITING_FOR_GUEST: 0,
     ROOM_READY: 1,
-    ROOM_FULL: 2
+    ROOM_FULL: 2,
+    LOADING: 3
 };
 
 // Reactive Data
-const state = ref(STATES.DISCONNECTED);
 const socket = ref(null);
+const state = ref(STATES.LOADING);
 const qrCode = ref(null);
 const occupants = ref(0);
 
@@ -43,18 +52,20 @@ const roomId = computed(() => route.params.id );
 
 // Store
 const userStore = useUserStore();
+const questionsStore = useQuestionsStore();
 const { updateHost, updatePartnerName } = userStore;
+const { updateAvailableQuestions, updateCurrentQuestions } = questionsStore;
 const { name } = storeToRefs(userStore);
 
 // Watchers
 watch(occupants, async (newAmount, oldAmount) => {
 
     if ( newAmount === 1 ) {
-        state.value = STATES.WAITING_FOR_GUEST
+        state.value = STATES.WAITING_FOR_GUEST;
     }
 
     if ( newAmount === 2 ) {
-        state.value = STATES.ROOM_READY
+        state.value = STATES.ROOM_READY;
     }
 });
 
@@ -66,28 +77,11 @@ const getQrCode = async () => {
 
 const createSocket = () => {
 
-    socket.value = io(location.host);
 
+    socket.value = io(location.host);
+    updateAvailableQuestions(questions);
     socketEmits('room_full_check', roomId.value);
     socketListeners();
-}
-
-const socketEmits = (event, data) => {
-
-    switch( event ) {
-        
-        case 'room_full_check':
-            
-            // Is room full
-            socket.value.emit('room_full_check', data);
-            break;
-
-        case 'user_name':
-
-            // Emit user name
-            socket.value.emit('user_name', data);
-            break;
-    }
 }
 
 const socketListeners = () => {
@@ -115,6 +109,42 @@ const socketListeners = () => {
             updatePartnerName(data);
         }
     });
+
+    // Commit current questions to store
+    socket.value.on('current_questions', data => {
+        
+        updateCurrentQuestions(data);
+    });
+
+    // Socket disconnected
+    socket.value.on('socket_disconnected', () => {
+
+        state.value = STATES.DISCONNECTED;
+    });
+}
+
+const socketEmits = (event, data) => {
+
+    switch( event ) {
+        
+        case 'room_full_check':
+            
+            // Is room full
+            socket.value.emit('room_full_check', data);
+            break;
+
+        case 'user_name':
+
+            // Emit user name
+            socket.value.emit('user_name', data);
+            break;
+        
+        case 'set_current_questions':
+
+            // Emit current questions
+            socket.value.emit('set_current_questions', data);
+            break;
+    }
 }
 
 const joinRoom = () => {

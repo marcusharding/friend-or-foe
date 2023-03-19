@@ -50,10 +50,19 @@ io.on('connection', async socket => {
         io.sockets.emit('partner_name', name);
     });
 
+    socket.on('set_current_questions', questions => {
+
+        // Broadcast the current questions for use
+        io.sockets.emit('current_questions', questions);
+    });
+
     // Socket disconnection
     socket.on('disconnect', reason => {
 
         console.log('socket disconnected: ', reason);
+
+        // Broadcast that user has disconnected
+        io.sockets.emit('socket_disconnected', reason);
     });
 });
 

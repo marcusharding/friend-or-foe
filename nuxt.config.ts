@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     modules: [
         '~/modules/ws',
         '@pinia/nuxt',
+        '@vite-pwa/nuxt'
     ],
 
     // serverHandlers: [
