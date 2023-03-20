@@ -56,6 +56,12 @@ io.on('connection', async socket => {
         io.sockets.emit('current_questions', questions);
     });
 
+    socket.on('set_user_selections', data => {
+
+        // Broadcast users selections
+        io.sockets.emit('user_selections', data);
+    });
+
     // Socket disconnection
     socket.on('disconnect', reason => {
 

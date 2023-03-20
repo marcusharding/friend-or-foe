@@ -8,7 +8,11 @@
         v-if="state === states.INSTRUCTIONS"
         :updateState="updateState"
     />
-    <Questions v-if="state === states.QUESTIONS" :socketEmits="socketEmits" />
+    <Questions 
+        v-if="state === states.QUESTIONS" 
+        :socketEmits="socketEmits"
+        :updateState="updateState"
+    />
     <Summary v-if="state === states.SUMMARY" />
 </template>
 
@@ -30,7 +34,6 @@ const STATES = {
 
 // Props
 const props = defineProps({
-    
     socketEmits: { type: Function, default: () => {} }
 });
 

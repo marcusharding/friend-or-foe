@@ -6,8 +6,8 @@ const qrOptions = {
     quality: 1,
     margin: 1,
     color: {
-      dark:"#505050",
-      light:"#E3E3E1"
+      dark:"#1d1d1f",
+      light:"#FDFDFD"
     }
 }
 

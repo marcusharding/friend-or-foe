@@ -11,7 +11,7 @@
             }" 
         />
         <button 
-            :class="`button ${name === '' && 'disabled'}`"
+            :class="`button ${!name ? 'disabled' : ''}`"
             @click="
                 updateState('INSTRUCTIONS');
                 socketEmits('user_name', name);

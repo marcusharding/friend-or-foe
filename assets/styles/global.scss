@@ -6,7 +6,7 @@
 
 #app {
     height: 100vh;
-    color: color(OffBlack);
+    color: color(OffWhite);
 }
 
 #app > div {
@@ -14,7 +14,7 @@
 }
 
 body {
-    background-color: color(OffGrey);
+    background-color: color(OffBlack);
     font-family: 'Montserrat', sans-serif;
     font-size: rem(16);
     font-weight: 400;
@@ -32,7 +32,7 @@ body {
 
 .button {
     border: 0;
-    background: color(OffBlack);
+    background: color(OffGrey);
     color: color(TrueWhite);
     text-decoration: none;
     padding: 10px 20px;
@@ -40,6 +40,11 @@ body {
 
     &:hover {
         cursor: pointer;
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
     }
 }
 

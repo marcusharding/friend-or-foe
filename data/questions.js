@@ -38,5 +38,5 @@ export const questions = [
             'Watching movies',
             'Playing sports'
         ]
-    },
+    }
 ];

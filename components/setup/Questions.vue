@@ -1,12 +1,29 @@
 <template>
-    <ul class="questions flex-col fade-in">
-        <li 
-            v-if="currentQuestions.length" v-for="(question, index) in currentQuestions" 
-            :key="`question-${index}`"
+    <div class="questions flex-col">
+        <ul class="questions-container flex-col fade-in">
+            <li
+                v-if="currentQuestions.length" 
+                v-for="(question, index) in currentQuestions" 
+                :key="`question-${index}`"
+            >
+                <Question 
+                    :question="question"
+                    :index="index"
+                    :updateSelection="updateSelection"
+                />
+            </li>
+        </ul>
+        <button
+            :class="`button ${selections.length === 3 ? '' : 'disabled'}`"
+            @click="
+                updateState('SUMMARY');
+                socketEmits('selections', selections);
+                updateUserSelections(selections);
+            "
         >
-            <Question :question="question" />
-        </li>
-    </ul>
+            Submit
+        </button>
+    </div>
 </template>
 
 <script setup>
@@ -24,16 +41,17 @@ const questionsStore = useQuestionsStore();
 const userStore = useUserStore();
 const { availableQuestions, currentQuestions } = storeToRefs(questionsStore);
 const { host } = storeToRefs(userStore);
-const { updateAvailableQuestions } = questionsStore;
+const { updateAvailableQuestions, updateUserSelections } = questionsStore;
 
 // Props
 const props = defineProps({
-    
-    socketEmits: { type: Function, default: () => {} }
+    socketEmits: { type: Function, default: () => {} },
+    updateState: { type: Function, default: () => {} }
 });
 
 // Reactive data 
 const { socketEmits } = toRefs(props);
+const selections = ref([]);
 
 // Methods
 const generateQuestions = () => {
@@ -58,6 +76,28 @@ const generateQuestions = () => {
     updateAvailableQuestions(questions);
 }
 
+const updateSelection = (question, selection) => {
+
+    const object = {
+        id: question.id,
+        selection: selection
+    }
+
+    if ( findIndex(question.id) === -1 ) {
+
+        selections.value.push(object);
+    }
+
+    if ( findIndex(question.id) !== -1 ) {
+
+        selections.value[findIndex(question.id)] = object;
+    }
+}
+
+const findIndex = id => {
+    return selections.value.findIndex(selection => selection.id === id);
+}
+
 // Created
 if ( host ) {
 
@@ -68,8 +108,13 @@ if ( host ) {
 
 <style lang="scss" scoped>
 
-.questions {
+.questions-container {
     list-style: none;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
 }
 
 </style>

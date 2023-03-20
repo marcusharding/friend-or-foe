@@ -54,7 +54,11 @@ const roomId = computed(() => route.params.id );
 const userStore = useUserStore();
 const questionsStore = useQuestionsStore();
 const { updateHost, updatePartnerName } = userStore;
-const { updateAvailableQuestions, updateCurrentQuestions } = questionsStore;
+const { 
+    updateAvailableQuestions, 
+    updateCurrentQuestions, 
+    updatePartnerSelections 
+} = questionsStore;
 const { name } = storeToRefs(userStore);
 
 // Watchers
@@ -116,6 +120,15 @@ const socketListeners = () => {
         updateCurrentQuestions(data);
     });
 
+    // Commit partners selections
+    socket.value.on('user_selections', data => {
+
+        if ( data.user !== name.value ) {
+
+            updatePartnerSelections(data.selections);
+        }
+    });
+
     // Socket disconnected
     socket.value.on('socket_disconnected', () => {
 
@@ -143,6 +156,17 @@ const socketEmits = (event, data) => {
 
             // Emit current questions
             socket.value.emit('set_current_questions', data);
+            break;
+
+        case 'selections':
+
+            // Emit users selections
+            socket.value.emit('set_user_selections', 
+                {
+                    selections: data,
+                    user: name.value
+                }
+            );
             break;
     }
 }
