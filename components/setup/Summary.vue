@@ -12,11 +12,11 @@
                 <h2>Your answers</h2>
                 <ul class="answers">
                     <!-- Break into UI component -->
-                    <li 
+                    <li
                         v-for="({selection}, index) in userSelections"
                         :class="
                             `answer ${selection === partnerSelections[index].selection ? 
-                                'correct' : 
+                                'correct' :
                                 'wrong'}`
                         "
                     >
@@ -83,6 +83,8 @@ const hasPartnerSelections = computed(() => {
 watch(hasPartnerSelections, async (newValue, oldValue) => {
 
     if ( newValue ) {
+
+        console.log('watch change triggered');
         
         calculateScore();
         setMessage();
@@ -91,6 +93,8 @@ watch(hasPartnerSelections, async (newValue, oldValue) => {
 
 // Methods
 const calculateScore = () => {
+
+    console.log('calculate score triggered: ', userSelections.value);
 
     userSelections.value.forEach((selection, index) => {
 
@@ -146,12 +150,9 @@ const getMessage = value => {
 }
 
 // Created
+if ( hasPartnerSelections === true ) {
 
-// Issue - Triggering when it shouldnt
-
-if ( hasPartnerSelections ) {
-
-    console.log('triggered from create');
+    console.log('Created call triggered');
 
     calculateScore();
     setMessage();
