@@ -48,4 +48,9 @@ const { updateName } = useUserStore();
     text-align: center;
 }
 
+input:focus-visible {
+    outline: #f09;
+    border-color: #f09;
+}
+
 </style>

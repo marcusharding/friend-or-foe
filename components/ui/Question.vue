@@ -1,5 +1,5 @@
 <template>
-    <div class="question" :id="`question-${question.id}`" :ref="`question${question.id}`">
+    <div class="question" :id="`question-${index + 1}`" :ref="`question${index + 1}`">
         <div class="heading-container">
             <h1 class="title">Question {{ index + 1 }}</h1>
         </div>
@@ -31,7 +31,8 @@
 // Modules
 import { useUserStore } from '~/store/user';
 import { storeToRefs } from 'pinia';
-import { toRefs, ref } from 'vue';
+import { toRefs, ref, onMounted } from 'vue';
+// import * as Hammer from 'hammerjs'
 
 // Store
 const userStore = useUserStore();
@@ -73,17 +74,51 @@ const onClickOption = event => {
     event.classList.add('active');
 }
 
+const initHammer = () => {
+
+    // const handle = this.$refs.question[index]
+    // console.log(handle);
+    // const hammertime = new Hammer.Manager(handle)
+}
+
+// Lifecycle hooks
+onMounted(() => {
+    // initHammer();
+});
+
 </script>
 
 <style lang="scss" scoped>
 
 .question {
-    width: 85%;
+    width: 95%;
+    max-width: 400px;
     height: auto;
     background-color: #3d3c3f;
     margin: 0 auto;
     color: white;
     border-radius: 10px;
+    position: absolute;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#question-1 {
+    transform: translate(0, -60%);
+    opacity: 0.25;
+}
+
+#question-2 {
+    transform: translate(0, -55%);
+    opacity: 0.5;
+}
+
+#question-3 {
+    transform: translate(0, -50%);
 }
 
 .options {

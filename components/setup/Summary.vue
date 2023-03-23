@@ -83,8 +83,6 @@ const hasPartnerSelections = computed(() => {
 watch(hasPartnerSelections, async (newValue, oldValue) => {
 
     if ( newValue ) {
-
-        console.log('watch change triggered');
         
         calculateScore();
         setMessage();
@@ -93,8 +91,6 @@ watch(hasPartnerSelections, async (newValue, oldValue) => {
 
 // Methods
 const calculateScore = () => {
-
-    console.log('calculate score triggered: ', userSelections.value);
 
     userSelections.value.forEach((selection, index) => {
 
@@ -136,12 +132,12 @@ const getMessage = value => {
         return obj.value === value;
     });
 
-    if ( object && host ) {
+    if ( object && host.value ) {
 
         text = object[0].hostText;
     }
 
-    if ( object && !host ) {
+    if ( object && !host.value ) {
 
         text = object[0].guestText;
     }
@@ -150,9 +146,7 @@ const getMessage = value => {
 }
 
 // Created
-if ( hasPartnerSelections === true ) {
-
-    console.log('Created call triggered');
+if ( hasPartnerSelections.value ) {
 
     calculateScore();
     setMessage();

@@ -34,12 +34,15 @@ const states = computed(() => STATES );
 // Methods
 const setDevice = () => {
 
-    const browser = Bowser.getParser(window.navigator.userAgent);
+    if ( window ) {
 
-    // Switch this check to test on desktop or mobile while in dev
-    browser.parsedResult.platform.type !== 'desktop' ? 
-        state.value = STATES.DESKTOP_DEVICE : 
-        state.value = STATES.GET_STARTED;
+        const browser = Bowser.getParser(window.navigator.userAgent);
+
+        // Switch this check to test on desktop or mobile while in dev
+        browser.parsedResult.platform.type !== 'desktop' ? 
+            state.value = STATES.DESKTOP_DEVICE : 
+            state.value = STATES.GET_STARTED;
+    }
 }
 
 const getQrCode = async () => {
