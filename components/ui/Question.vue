@@ -1,5 +1,5 @@
 <template>
-    <div class="question" :id="`question-${index + 1}`" :ref="`question${index + 1}`">
+    <li class="question" :id="`question-${index + 1}`" :ref="`question${index + 1}`">
         <div class="heading-container">
             <h1 class="title">Question {{ index + 1 }}</h1>
         </div>
@@ -23,7 +23,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </li>
 </template>
 
 <script setup>
@@ -31,8 +31,7 @@
 // Modules
 import { useUserStore } from '~/store/user';
 import { storeToRefs } from 'pinia';
-import { toRefs, ref, onMounted } from 'vue';
-// import * as Hammer from 'hammerjs'
+import { toRefs, ref } from 'vue';
 
 // Store
 const userStore = useUserStore();
@@ -42,7 +41,8 @@ const { host, partnerName } = storeToRefs(userStore);
 const props = defineProps({
     question: { type: Object, default: () => {} },
     index: { type: Number, default: 0 },
-    updateSelection: { type: Function, default: () => {} }
+    updateSelection: { type: Function, default: () => {} },
+    selection: { type: Object, default: () => {} }
 });
 
 // Reactive data
@@ -74,51 +74,29 @@ const onClickOption = event => {
     event.classList.add('active');
 }
 
-const initHammer = () => {
-
-    // const handle = this.$refs.question[index]
-    // console.log(handle);
-    // const hammertime = new Hammer.Manager(handle)
-}
-
-// Lifecycle hooks
-onMounted(() => {
-    // initHammer();
-});
-
 </script>
 
 <style lang="scss" scoped>
 
 .question {
-    width: 95%;
-    max-width: 400px;
-    height: auto;
     background-color: #3d3c3f;
-    margin: 0 auto;
     color: white;
-    border-radius: 10px;
-    position: absolute;
     text-align: center;
+    width: 90vw;
+    max-width: 400px;
+    height: 70vh;
+    border-radius: 8px;
+    overflow: hidden;
     position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    margin: auto;
+    will-change: transform;
+    transition: all 0.3s ease-in-out;
+    cursor: grab;
 }
-
-#question-1 {
-    transform: translate(0, -60%);
-    opacity: 0.25;
-}
-
-#question-2 {
-    transform: translate(0, -55%);
-    opacity: 0.5;
-}
-
-#question-3 {
-    transform: translate(0, -50%);
+.moving.question {
+  transition: none;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;
 }
 
 .options {
@@ -126,13 +104,10 @@ onMounted(() => {
     padding: 0;
 }
 
-.current-question {
-    margin-bottom: 30px;
-}
-
 .heading-container {
     padding: 5px 25px 25px 25px;
     box-shadow: 0 4px 6px -6px #313033;
+    pointer-events: none;
 }
 
 .options-container {
@@ -140,6 +115,7 @@ onMounted(() => {
     padding: 25px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    pointer-events: none;
 }
 
 .option {
@@ -151,6 +127,7 @@ onMounted(() => {
     align-items: center;
     border: solid 1px #3d3c3f;
     transition: border 3ms ease-in;
+    pointer-events: all;
 
     &:before {
         content: '';
