@@ -1,18 +1,22 @@
 <template>
-    <li class="question" :id="`question-${index + 1}`" :ref="`question${index + 1}`">
+    <li
+        class="question"
+        :id="`question-${index + 1}`"
+        :ref="`question${index + 1}`"
+    >
         <div class="heading-container">
-            <h1 class="title">Question {{ index + 1 }}</h1>
+            <h2 class="title">Question {{ index + 1 }}</h2>
         </div>
         <div class="options-container">
             <p class="current-question">
-                {{ 
-                    host ? 
-                    formatQuestion(question.questionHost) : 
+                {{
+                    host ?
+                    formatQuestion(question.questionHost) :
                     formatQuestion(question.questionGuest)
                 }}
             </p>
             <ul class="options" ref="options">
-                <li 
+                <li
                     v-for="(option, index) in question.options"
                     :key="`option-${index}`"
                     @click="updateSelection(question, option); onClickOption($event.target);"
@@ -41,12 +45,11 @@ const { host, partnerName } = storeToRefs(userStore);
 const props = defineProps({
     question: { type: Object, default: () => {} },
     index: { type: Number, default: 0 },
-    updateSelection: { type: Function, default: () => {} },
-    selection: { type: Object, default: () => {} }
+    updateSelection: { type: Function, default: () => {} }
 });
 
 // Reactive data
-const { question, index } = toRefs(props);
+const { question, index, hasSelection } = toRefs(props);
 const options = ref(null)
 
 // Methods
@@ -82,9 +85,9 @@ const onClickOption = event => {
     background-color: #3d3c3f;
     color: white;
     text-align: center;
-    width: 90vw;
+    width: 70vw;
     max-width: 400px;
-    height: 70vh;
+    height: 60vh;
     border-radius: 8px;
     overflow: hidden;
     position: absolute;

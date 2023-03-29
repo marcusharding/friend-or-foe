@@ -41,7 +41,7 @@
                 </ul>
             </div>
             <div class="score">
-                <h2>You scored</h2>
+                <h2>Final score</h2>
                 <p>{{ score }} / 3</p>
             </div>
         </div>

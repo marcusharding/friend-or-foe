@@ -144,58 +144,61 @@ const initHammer = () => {
 
         const hammertime = new $Hammer(card);
 
-        hammertime.on('pan', event => {
-
-            if ( event.target.classList.contains('question') ) {
-
-                if ( selections.value[index] ) {
-
-                    if (event.deltaX === 0) return;
-                    if (event.center.x === 0 && event.center.y === 0) return;
-
-                    card.classList.add('moving');
-
-                    const xMulti = event.deltaX * 0.03;
-                    const yMulti = event.deltaY / 80;
-                    const rotate = xMulti * yMulti;
-
-                    event.target.style.transform = 'translate(' + event.deltaX + 'px, ' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
-                }
-            }
-        });
-
-        hammertime.on('panend', event => {
-
-            if ( selections.value[index] ) {
-
-                card.classList.remove('moving');
-
-                const moveOutWidth = document.body.clientWidth;
-                const keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
-
-                event.target.classList.toggle('removed', !keep);
-
-                if ( keep ) {
-
-                    event.target.style.transform = '';
-
-                } else {
-
-                    const endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
-                    const toX = event.deltaX > 0 ? endX : - endX;
-                    const endY = Math.abs(event.velocityY) * moveOutWidth;
-                    const toY = event.deltaY > 0 ? endY : - endY;
-                    const xMulti = event.deltaX * 0.03;
-                    const yMulti = event.deltaY / 80;
-                    const rotate = xMulti * yMulti;
-
-                    event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
-
-                    initQuestions();
-                }
-            }
-        });
+        hammertime.on('pan', event => { moveStart(event, card, index) });
+        hammertime.on('panend', event => { moveEnd(event, card, index) });
     });
+}
+
+const moveStart = (event, card, index) => {
+
+    if ( event.target.classList.contains('question') ) {
+
+        if ( selections.value[index] ) {
+
+            if (event.deltaX === 0) return;
+            if (event.center.x === 0 && event.center.y === 0) return;
+
+            card.classList.add('moving');
+
+            const xMulti = event.deltaX * 0.03;
+            const yMulti = event.deltaY / 80;
+            const rotate = xMulti * yMulti;
+
+            event.target.style.transform = 'translate(' + event.deltaX + 'px, ' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
+        }
+    }
+}
+
+const moveEnd = (event, card, index) => {
+
+    if ( selections.value[index] ) {
+
+        card.classList.remove('moving');
+
+        const moveOutWidth = document.body.clientWidth;
+        const keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
+
+        event.target.classList.toggle('removed', !keep);
+
+        if ( keep ) {
+
+            event.target.style.transform = '';
+
+        } else {
+
+            const endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
+            const toX = event.deltaX > 0 ? endX : - endX;
+            const endY = Math.abs(event.velocityY) * moveOutWidth;
+            const toY = event.deltaY > 0 ? endY : - endY;
+            const xMulti = event.deltaX * 0.03;
+            const yMulti = event.deltaY / 80;
+            const rotate = xMulti * yMulti;
+
+            event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
+
+            initQuestions();
+        }
+    }
 }
 
 // Created
