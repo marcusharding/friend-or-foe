@@ -13,11 +13,9 @@
                 <ul class="answers">
                     <!-- Break into UI component -->
                     <li
-                        v-for="({selection}, index) in userSelections"
+                        v-for="({selection}) in userSelections"
                         :class="
-                            `answer ${selection === partnerSelections[index].selection ? 
-                                'correct' :
-                                'wrong'}`
+                            `answer ${getAnswerClass(selection)}`
                         "
                     >
                         {{ selection }}
@@ -92,13 +90,33 @@ watch(hasPartnerSelections, async (newValue, oldValue) => {
 // Methods
 const calculateScore = () => {
 
-    userSelections.value.forEach((selection, index) => {
+    userSelections.value.forEach(selection => {
 
-        if ( selection.selection === partnerSelections.value[index].selection ) {
+        if (
+            partnerSelections.value.filter(
+                e => e.selection === selection.selection
+            ).length > 0 
+        ) {
 
             score.value = score.value += 1;
         }
     });
+}
+
+const getAnswerClass = selection => {
+
+    let className = 'wrong';
+
+    if (
+        partnerSelections.value.filter(
+            e => e.selection === selection
+        ).length > 0 
+    ) {
+
+        className = 'correct';
+    }
+
+    return className;
 }
 
 const setMessage = () => {
