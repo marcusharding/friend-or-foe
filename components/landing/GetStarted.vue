@@ -12,7 +12,7 @@
             </span>
         </h1>
         <p class="subtitle">Find out if you're a dynamic duo or an epic fail! But dont sweat it, its just a game.</p>
-        <img class="image" src="@/assets/images/sweating.gif" alt="" />
+        <img class="gif" src="@/assets/images/sweating.gif" alt="" />
         <NuxtLink :to="roomLink" class="button">Get started</NuxtLink>
     </div>
 </template>
@@ -25,17 +25,3 @@ const props = defineProps({
 });
 
 </script>
-
-<style lang="scss" scoped>
-
-.image {
-    margin: 40px 0;
-    border-radius: 10px;
-}
-
-.subtitle {
-    max-width: 400px;
-    text-align: center;
-}
-
-</style>

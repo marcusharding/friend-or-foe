@@ -40,8 +40,8 @@ const setDevice = () => {
 
         // Switch this check to test on desktop or mobile while in dev
         browser.parsedResult.platform.type !== 'desktop' ? 
-            state.value = STATES.DESKTOP_DEVICE : 
-            state.value = STATES.GET_STARTED;
+            state.value = STATES.GET_STARTED : 
+            state.value = STATES.DESKTOP_DEVICE;
     }
 }
 

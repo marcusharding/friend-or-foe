@@ -1,6 +1,6 @@
 <template>
     <div class="disconnected flex-col fade-in">
-        <h1>Oops, your partner has disconnected from the game.</h1>
+        <h1 class="heading">Oops, your partner has disconnected from the game.</h1>
         <NuxtLink 
             to="/" 
             class="button" 
@@ -41,11 +41,3 @@ const wipeStore = () => {
 }
 
 </script>
-
-<style lang="scss" scoped>
-
-h1 {
-    text-align: center;
-}
-
-</style>

@@ -1,13 +1,6 @@
 <template>
     <div class="summary flex-col fade-in">
-        <h1>Summary</h1>
-        <p 
-            v-if="!hasPartnerSelections"
-        >
-            Waiting for {{ partnerName }} to complete their answers...
-        </p>
-        <div v-if="hasPartnerSelections" class="summary-container fade-in">
-            <p class="message">{{ message }}</p>
+        <div class="summary-container fade-in">
             <div class="user-answers">
                 <h2>Your answers</h2>
                 <ul class="answers">
@@ -48,6 +41,8 @@
 
 <script setup>
 
+// TO DO - Strip out duplicated logic from intermission when can pull from store
+
 // Modules
 import { useQuestionsStore } from '~/store/questions';
 import { useUserStore } from '~/store/user';
@@ -61,7 +56,7 @@ import { scoreCopy } from '@/data/summary';
 const questionsStore = useQuestionsStore();
 const userStore = useUserStore();
 const { partnerSelections, userSelections } = storeToRefs(questionsStore);
-const { name, partnerName, host } = storeToRefs(userStore);
+const { partnerName, host } = storeToRefs(userStore);
 
 // Props
 const props = defineProps({

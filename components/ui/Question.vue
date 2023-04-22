@@ -1,5 +1,5 @@
 <template>
-    <li
+    <div
         class="question"
         :id="`question-${index + 1}`"
         :ref="`question${index + 1}`"
@@ -27,7 +27,7 @@
                 </li>
             </ul>
         </div>
-    </li>
+    </div>
 </template>
 
 <script setup>
@@ -90,7 +90,6 @@ const onClickOption = event => {
     height: 60vh;
     border-radius: 8px;
     overflow: hidden;
-    position: absolute;
     will-change: transform;
     transition: all 0.3s ease-in-out;
     cursor: grab;

@@ -6,4 +6,13 @@
 
 <script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.image {
+    max-width: 50px;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+}
+
+</style>

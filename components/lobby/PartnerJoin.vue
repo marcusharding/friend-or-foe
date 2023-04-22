@@ -1,7 +1,7 @@
 <template>
     <div class="partner-join flex-col fade-in">
-        <h1>Waiting for a guest to join...</h1>
-        <p>Have your guest scan the below QR Code on another mobile device to join this session.</p>
+        <h1 class="heading">Waiting for a guest to join...</h1>
+        <p class="subtitle">Have your guest scan the below QR Code on another mobile device to join this session.</p>
         <img class="qr-code" :src="qrCode" alt="" />
     </div>
 </template>
@@ -22,8 +22,14 @@ const props = defineProps({
 }
 
 .qr-code {
-    width: 250px;
+    width: 100%;
+    max-width: 350px;
     height: auto;
+}
+
+.heading {
+    line-height: 130%;
+    margin-bottom: 30px;
 }
 
 </style>

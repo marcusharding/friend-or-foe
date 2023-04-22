@@ -1,6 +1,6 @@
 <template>
     <div class="name flex-col fade-in">
-        <h1>Enter Your Name</h1>
+        <h1 class="heading">Enter Your Name</h1>
         <input 
             class="input"
             placeholder="Enter Your Name" 
@@ -48,7 +48,15 @@ const { updateName } = useUserStore();
     text-align: center;
 }
 
-input:focus-visible {
+.heading {
+    margin-bottom: 50px;
+}
+
+.input {
+    margin-bottom: 50px;
+}
+
+.input:focus-visible {
     outline: #f09;
     border-color: #f09;
 }

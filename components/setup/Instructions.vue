@@ -1,11 +1,22 @@
 <template>
     <div v-if="!partnerName" class="flex-col">
-        <p>Waiting for partner to enter their details...</p>
+        <img class="gif" src="@/assets/images/mr-bean.gif" alt="" />
+        <h1>Waiting for partner to enter their details...</h1>
     </div>
     <div v-if="partnerName" class="instructions flex-col">
         <h1>How to play.</h1>
-        <p v-if="host && partnerName">{{ partnerName }} will be answering questions about you.</p>
-        <p v-if="!host && partnerName">You will be answering questions about {{ partnerName }}.</p>
+        <p 
+            class="subtitle" 
+            v-if="host && partnerName"
+        >
+            {{ partnerName }} will be answering questions about you.
+        </p>
+        <p 
+            class="subtitle" 
+            v-if="!host && partnerName"
+        >
+            You will be answering questions about {{ partnerName }}.
+        </p>
         <button 
             v-if="partnerName"
             class="button"
@@ -32,5 +43,3 @@ const props = defineProps({
 });
 
 </script>
-
-<style lang="scss" scoped></style>

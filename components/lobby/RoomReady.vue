@@ -13,6 +13,7 @@
         :socketEmits="socketEmits"
         :updateState="updateState"
     />
+    <Intermission v-if="state === states.INTERMISSION" :updateState="updateState" />
     <Summary v-if="state === states.SUMMARY" />
 </template>
 
@@ -23,13 +24,15 @@ import EnterName from '@/components/setup/EnterName.vue';
 import Instructions from '@/components/setup/Instructions.vue';
 import Questions from '@/components/setup/Questions.vue';
 import Summary from '@/components/setup/Summary.vue';
+import Intermission from '@/components/setup/Intermission.vue';
 
 // Static Data
 const STATES = {
     ENTER_NAME: 0,
     INSTRUCTIONS: 1,
     QUESTIONS: 2,
-    SUMMARY: 3
+    INTERMISSION: 3,
+    SUMMARY: 4
 };
 
 // Props

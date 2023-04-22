@@ -3,21 +3,20 @@
         <h1>Waiting for host...</h1>
     </div>
     <div v-if="currentQuestions.length" class="questions flex-col">
-        <ul class="questions-container flex-col fade-in" ref="questionsContainer">
-            <Question
-                v-if="currentQuestions.length"
-                v-for="(question, index) in currentQuestions"
-                ref="questions"
-                :key="`question-${index}`"
-                :question="question"
-                :index="index"
-                :updateSelection="updateSelection"
-            />
-        </ul>
+        <div class="swiper" ref="questionsSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="(question, index) in currentQuestions" :key="`question-${index}`">
+                    <Question
+                        :question="question"
+                        :updateSelection="updateSelection"
+                    />
+                </div>
+            </div>
+        </div>
         <button
             :class="`button ${selections.length === 3 ? '' : 'disabled'}`"
             @click="
-                updateState('SUMMARY');
+                updateState('INTERMISSION');
                 socketEmits('selections', selections);
                 updateUserSelections(selections);
             "
@@ -33,7 +32,11 @@
 import { useQuestionsStore } from '~/store/questions';
 import { useUserStore } from '~/store/user';
 import { storeToRefs } from 'pinia';
-import { toRefs, ref, onMounted } from 'vue';
+import { toRefs, ref } from 'vue';
+import Swiper from 'swiper'
+
+// Styles
+import 'swiper/swiper.min.css'
 
 // Components
 import Question from '@/components/ui/Question.vue';
@@ -54,19 +57,15 @@ const props = defineProps({
 // Reactive data
 const { socketEmits } = toRefs(props);
 const selections = ref([]);
-const questions = ref(null);
-const questionsContainer = ref(null);
-
-// Plugins
-const { $Hammer } = useNuxtApp();
+const questionsSwiper = ref(null);
+const swiper = ref(null);
 
 // Watchers
-watch(questions, value => {
+watch(currentQuestions, value => {
 
     if ( value.length > 0 ) {
 
         initQuestions();
-        initHammer();
     }
 });
 
@@ -81,13 +80,13 @@ const generateQuestions = () => {
     socketEmits.value('set_current_questions', [...current]);
 
     // Remove the questions we just chose to use from selection pool
-    current.forEach(question => {
+    // current.forEach(question => {
 
-        if ( questions.includes(question) ) {
+    //     if ( questions.includes(question) ) {
 
-            questions.splice(questions.indexOf(question), 1);
-        }
-    });
+    //         questions.splice(questions.indexOf(question), 1);
+    //     }
+    // });
 
     // Now commit the remaining questions back to the store
     updateAvailableQuestions(questions);
@@ -120,85 +119,13 @@ const findIndex = id => {
 
 const initQuestions = () => {
 
-    const newQuestions = questionsContainer.value.querySelectorAll('.question:not(.removed)');
-    const allQuestions = questionsContainer.value.querySelectorAll('.question');
-
-    if ( newQuestions.length > 0 ) {
-
-        newQuestions.forEach((question, index) => {
-
-            question.style.zIndex = allQuestions.length - index;
-            question.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
-            question.style.opacity = (10 - index) / 10;
-        });
-
-        questionsContainer.value.classList.add('loaded');
-    }
-}
-
-const initHammer = () => {
-
-    const allQuestions = questionsContainer.value.querySelectorAll('.question');
-
-    allQuestions.forEach((card, index) => {
-
-        const hammertime = new $Hammer(card);
-
-        hammertime.on('pan', event => { moveStart(event, card, index) });
-        hammertime.on('panend', event => { moveEnd(event, card, index) });
+    swiper.value = new Swiper(questionsSwiper.value, {
+        slideToClickedSlide: true,
+        slidesPerView: 1.1,
+        threshold: 10,
+        loop: false,
+        grabCursor: true
     });
-}
-
-const moveStart = (event, card, index) => {
-
-    if ( event.target.classList.contains('question') ) {
-
-        if ( selections.value[index] ) {
-
-            if (event.deltaX === 0) return;
-            if (event.center.x === 0 && event.center.y === 0) return;
-
-            card.classList.add('moving');
-
-            const xMulti = event.deltaX * 0.03;
-            const yMulti = event.deltaY / 80;
-            const rotate = xMulti * yMulti;
-
-            event.target.style.transform = 'translate(' + event.deltaX + 'px, ' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
-        }
-    }
-}
-
-const moveEnd = (event, card, index) => {
-
-    if ( selections.value[index] ) {
-
-        card.classList.remove('moving');
-
-        const moveOutWidth = document.body.clientWidth;
-        const keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
-
-        event.target.classList.toggle('removed', !keep);
-
-        if ( keep ) {
-
-            event.target.style.transform = '';
-
-        } else {
-
-            const endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
-            const toX = event.deltaX > 0 ? endX : - endX;
-            const endY = Math.abs(event.velocityY) * moveOutWidth;
-            const toY = event.deltaY > 0 ? endY : - endY;
-            const xMulti = event.deltaX * 0.03;
-            const yMulti = event.deltaY / 80;
-            const rotate = xMulti * yMulti;
-
-            event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
-
-            initQuestions();
-        }
-    }
 }
 
 // Created
@@ -214,6 +141,10 @@ if ( host ) {
     list-style: none;
     height: 100%;
     padding: 0;
+}
+
+.swiper {
+    width: 100%;
 }
 
 </style>
