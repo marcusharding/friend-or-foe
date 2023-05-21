@@ -81,8 +81,7 @@ const getQrCode = async () => {
 
 const createSocket = () => {
 
-
-    socket.value = io(location.host);
+    socket.value = io('/');
     updateAvailableQuestions(questions);
     socketEmits('room_full_check', roomId.value);
     socketListeners();
