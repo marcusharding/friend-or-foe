@@ -1,12 +1,6 @@
 <template>
     <div class="flex-col">
-        <!-- Make a component -->
-        <div v-if="!hasPartnerSelections" class="fade-in">
-            <img class="gif" src="@/assets/images/mr-bean.gif" alt="" />
-            <h1>
-                Waiting for {{ partnerName }} to complete their answers...
-            </h1>
-        </div>
+        <Waiting v-if="!hasPartnerSelections" message="Waiting for partner to answer their questions..." />
         <div :class="hasPartnerSelections ? 'flex' : 'hidden'" class="flex-col">
             <h1 class="fade-in text-center" ref="heading">The results are in!</h1>
             <img class="gif hidden" :src="imagePath" alt="" ref="gif" />
@@ -34,11 +28,14 @@ import confused from '@/assets/images/confused.gif';
 import unimpressed from '@/assets/images/unimpressed.gif';
 import hug from '@/assets/images/hug.gif';
 
+// Components
+import Waiting from '../ui/Waiting.vue';
+
 // Store
 const questionsStore = useQuestionsStore();
 const userStore = useUserStore();
 const { partnerSelections, userSelections } = storeToRefs(questionsStore);
-const { partnerName, host } = storeToRefs(userStore);
+const { host } = storeToRefs(userStore);
 
 // Props
 const props = defineProps({

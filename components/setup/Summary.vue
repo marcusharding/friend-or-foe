@@ -4,7 +4,6 @@
             <div class="user-answers">
                 <h2>Your answers</h2>
                 <ul class="answers">
-                    <!-- Break into UI component -->
                     <li
                         v-for="({selection}) in userSelections"
                         :class="
@@ -18,7 +17,6 @@
             <div class="partner-answers">
                 <h2>{{ partnerName }}'s answers</h2>
                 <ul class="answers">
-                    <!-- Break into UI component -->
                     <li 
                         v-for="({selection}, index) in partnerSelections"
                         :class="
@@ -38,7 +36,7 @@
             <NuxtLink 
                 to="/" 
                 class="button"
-                @click="updateState('QUESTIONS');"
+                @click="updateUserSelections([]); updatePartnerSelections([]); updateState('QUESTIONS');"
             >
                 Play again
             </NuxtLink>
@@ -48,22 +46,21 @@
 
 <script setup>
 
-// TO DO - Strip out duplicated logic from intermission when can pull from store
-
 // Modules
 import { useQuestionsStore } from '~/store/questions';
 import { useUserStore } from '~/store/user';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
-// Data
-import { scoreCopy } from '@/data/summary';
-
 // Store
 const questionsStore = useQuestionsStore();
 const userStore = useUserStore();
 const { partnerSelections, userSelections } = storeToRefs(questionsStore);
-const { partnerName, host } = storeToRefs(userStore);
+const { partnerName } = storeToRefs(userStore);
+const {
+    updateUserSelections,
+    updatePartnerSelections 
+} = questionsStore;
 
 // Props
 const props = defineProps({
@@ -72,7 +69,6 @@ const props = defineProps({
 
 // Reactive data
 const score = ref(0);
-const message = ref();
 
 // Computed
 const hasPartnerSelections = computed(() => {
@@ -82,11 +78,7 @@ const hasPartnerSelections = computed(() => {
 // Watchers
 watch(hasPartnerSelections, async (newValue, oldValue) => {
 
-    if ( newValue ) {
-        
-        calculateScore();
-        setMessage();
-    }
+    if ( newValue ) { calculateScore() }
 });
 
 // Methods
@@ -121,50 +113,8 @@ const getAnswerClass = selection => {
     return className;
 }
 
-const setMessage = () => {
-
-    switch( score.value ) {
-
-        case 0:
-            message.value = getMessage(score.value);
-            break;
-
-        case 1:
-            message.value = getMessage(score.value);
-            break;
-
-        case 2:
-            message.value = getMessage(score.value);
-            break;
-
-        case 3:
-            message.value = getMessage(score.value);
-            break;
-    }
-}
-
-const getMessage = value => {
-
-    let text = '';
-
-    const object = scoreCopy.filter(obj => {
-
-        return obj.value === value;
-    });
-
-    if ( object && host.value ) { text = object[0].hostText }
-
-    if ( object && !host.value ) { text = object[0].guestText }
-
-    return text;
-}
-
 // Created
-if ( hasPartnerSelections.value ) {
-
-    calculateScore();
-    setMessage();
-}
+if ( hasPartnerSelections.value ) { calculateScore() }
 
 </script>
 

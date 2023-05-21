@@ -1,7 +1,5 @@
 <template>
-    <div :class="!currentQuestions.length ? 'flex' : 'hidden'" class="flex-col fade-in">
-        <p>Waiting for host...</p>
-    </div>
+    <Waiting v-if="!currentQuestions.length" message="Waiting for the host to begin..." />
     <div class="questions flex-col fade-in" :class="currentQuestions.length ? 'flex' : 'hidden'">
         <div class="swiper" ref="questionsSwiper">
             <div class="swiper-wrapper">
@@ -41,6 +39,7 @@ import 'swiper/swiper.min.css'
 
 // Components
 import Question from '@/components/ui/Question.vue';
+import Waiting from '../ui/Waiting.vue';
 
 // Store
 const questionsStore = useQuestionsStore();
@@ -60,12 +59,6 @@ const { socketEmits } = toRefs(props);
 const selections = ref([]);
 const questionsSwiper = ref(null);
 const swiper = ref(null);
-
-// Watchers
-// watch(currentQuestions, value => {
-
-//     if ( value.length > 0 ) { initQuestions(); console.log('init questions') }
-// });
 
 // Methods
 const generateQuestions = () => {
@@ -114,16 +107,6 @@ const updateSelection = (question, selection) => {
 const findIndex = id => {
     return selections.value.findIndex(selection => selection.id === id);
 }
-
-// const initQuestions = () => {
-
-//     swiper.value = new Swiper(questionsSwiper.value, {
-//         slidesPerView: "auto",
-//         centeredSlides: "true",
-//         slidesPerView: 1.2,
-//         spaceBetween: 20
-//     });
-// }
 
 // Created
 if ( host.value ) { generateQuestions(); }
