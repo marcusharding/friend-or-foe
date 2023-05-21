@@ -28,8 +28,11 @@ export default defineNuxtConfig({
     modules: [
         '~/modules/ws',
         '@pinia/nuxt',
-        '@vite-pwa/nuxt'
+        '@vite-pwa/nuxt',
+        'nuxt-gtag',
     ],
+
+    gtag: { id: 'G-QM882L1D28' },
 
     // serverHandlers: [
     //     {
