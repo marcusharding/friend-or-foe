@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ref, onMounted } from 'vue';
 
 // Helpers
-import { generateQr } from '@/utils/helpers';
+import { generateQr } from '@/assets/utils/helpers';
 
 // Components
 import DesktopDevice from '@/components/landing/DesktopDevice.vue';
@@ -40,8 +40,8 @@ const setDevice = () => {
 
         // Switch this check to test on desktop or mobile while in dev
         browser.parsedResult.platform.type !== 'desktop' ? 
-            state.value = STATES.GET_STARTED : 
-            state.value = STATES.DESKTOP_DEVICE;
+            state.value = STATES.DESKTOP_DEVICE:
+            state.value = STATES.GET_STARTED;
     }
 }
 

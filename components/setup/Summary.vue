@@ -35,6 +35,13 @@
                 <h2>Final score</h2>
                 <p>{{ score }} / 3</p>
             </div>
+            <NuxtLink 
+                to="/" 
+                class="button"
+                @click="updateState('QUESTIONS');"
+            >
+                Play again
+            </NuxtLink>
         </div>
     </div>
 </template>
@@ -60,7 +67,7 @@ const { partnerName, host } = storeToRefs(userStore);
 
 // Props
 const props = defineProps({
-    socket: { type: Object, default: () => {} }
+    updateState: { type: Function, default: () => {} }
 });
 
 // Reactive data
@@ -145,15 +152,9 @@ const getMessage = value => {
         return obj.value === value;
     });
 
-    if ( object && host.value ) {
+    if ( object && host.value ) { text = object[0].hostText }
 
-        text = object[0].hostText;
-    }
-
-    if ( object && !host.value ) {
-
-        text = object[0].guestText;
-    }
+    if ( object && !host.value ) { text = object[0].guestText }
 
     return text;
 }

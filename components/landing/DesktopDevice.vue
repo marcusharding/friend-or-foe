@@ -16,4 +16,22 @@ const props = defineProps({
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.desktop-device {
+    align-items: center;
+}
+
+h1,
+p {
+    text-align: center;
+}
+
+img {
+    width: 50%;
+    max-width: 300px;
+    height: auto;
+    margin-top: 40px;
+}
+
+</style>

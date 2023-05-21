@@ -16,7 +16,7 @@ import { useQuestionsStore } from '~/store/questions';
 import { storeToRefs } from 'pinia';
 
 // Helpers
-import { generateQr } from '@/utils/helpers';
+import { generateQr } from '@/assets/utils/helpers';
 
 // Components
 import RoomFull from '@/components/lobby/RoomFull.vue';

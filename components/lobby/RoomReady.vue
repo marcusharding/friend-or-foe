@@ -14,7 +14,7 @@
         :updateState="updateState"
     />
     <Intermission v-if="state === states.INTERMISSION" :updateState="updateState" />
-    <Summary v-if="state === states.SUMMARY" />
+    <Summary v-if="state === states.SUMMARY" :updateState="updateState" />
 </template>
 
 <script setup>
@@ -47,10 +47,7 @@ const state = ref(STATES.ENTER_NAME);
 const states = computed(() => STATES );
 
 // Methods
-const updateState = value => {
-
-    state.value = STATES[value];
-}
+const updateState = value => state.value = STATES[value];
 
 </script>
 

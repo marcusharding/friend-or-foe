@@ -85,20 +85,10 @@ const onClickOption = event => {
     background-color: #3d3c3f;
     color: white;
     text-align: center;
-    width: 70vw;
-    max-width: 400px;
-    height: 60vh;
-    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
     overflow: hidden;
-    will-change: transform;
-    transition: all 0.3s ease-in-out;
-    cursor: grab;
-}
-.moving.question {
-  transition: none;
-  cursor: -webkit-grabbing;
-  cursor: -moz-grabbing;
-  cursor: grabbing;
 }
 
 .options {
@@ -107,29 +97,30 @@ const onClickOption = event => {
 }
 
 .heading-container {
-    padding: 5px 25px 25px 25px;
-    box-shadow: 0 4px 6px -6px #313033;
-    pointer-events: none;
+    padding: 5px;
 }
 
 .options-container {
     background-color: #313033;
     padding: 25px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    pointer-events: none;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    height: 100%;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .option {
     background-color: #3d3c3f;
     margin-bottom: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px 0 10px 10px;
     display: flex;
     align-items: center;
-    border: solid 1px #3d3c3f;
     transition: border 3ms ease-in;
-    pointer-events: all;
+    border: solid 1px #3d3c3f;
 
     &:before {
         content: '';

@@ -1,13 +1,14 @@
 <template>
-    <div v-if="!currentQuestions.length" class="flex-col">
-        <h1>Waiting for host...</h1>
+    <div :class="!currentQuestions.length ? 'flex' : 'hidden'" class="flex-col fade-in">
+        <p>Waiting for host...</p>
     </div>
-    <div v-if="currentQuestions.length" class="questions flex-col">
+    <div class="questions flex-col fade-in" :class="currentQuestions.length ? 'flex' : 'hidden'">
         <div class="swiper" ref="questionsSwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(question, index) in currentQuestions" :key="`question-${index}`">
                     <Question
                         :question="question"
+                        :index="index"
                         :updateSelection="updateSelection"
                     />
                 </div>
@@ -61,13 +62,10 @@ const questionsSwiper = ref(null);
 const swiper = ref(null);
 
 // Watchers
-watch(currentQuestions, value => {
+// watch(currentQuestions, value => {
 
-    if ( value.length > 0 ) {
-
-        initQuestions();
-    }
-});
+//     if ( value.length > 0 ) { initQuestions(); console.log('init questions') }
+// });
 
 // Methods
 const generateQuestions = () => {
@@ -80,13 +78,13 @@ const generateQuestions = () => {
     socketEmits.value('set_current_questions', [...current]);
 
     // Remove the questions we just chose to use from selection pool
-    // current.forEach(question => {
+    current.forEach(question => {
 
-    //     if ( questions.includes(question) ) {
+        if ( questions.includes(question) ) {
 
-    //         questions.splice(questions.indexOf(question), 1);
-    //     }
-    // });
+            questions.splice(questions.indexOf(question), 1);
+        }
+    });
 
     // Now commit the remaining questions back to the store
     updateAvailableQuestions(questions);
@@ -117,21 +115,29 @@ const findIndex = id => {
     return selections.value.findIndex(selection => selection.id === id);
 }
 
-const initQuestions = () => {
+// const initQuestions = () => {
 
-    swiper.value = new Swiper(questionsSwiper.value, {
-        slideToClickedSlide: true,
-        slidesPerView: 1.1,
-        threshold: 10,
-        loop: false,
-        grabCursor: true
-    });
-}
+//     swiper.value = new Swiper(questionsSwiper.value, {
+//         slidesPerView: "auto",
+//         centeredSlides: "true",
+//         slidesPerView: 1.2,
+//         spaceBetween: 20
+//     });
+// }
 
 // Created
-if ( host ) {
-    generateQuestions();
-}
+if ( host.value ) { generateQuestions(); }
+
+// Lifecylce Hooks
+onMounted(() => {
+
+    swiper.value = new Swiper(questionsSwiper.value, {
+        slidesPerView: "auto",
+        centeredSlides: "true",
+        slidesPerView: 1.2,
+        spaceBetween: 20
+    });
+});
 
 </script>
 
@@ -145,6 +151,11 @@ if ( host ) {
 
 .swiper {
     width: 100%;
+    margin-bottom: 40px;
+}
+
+p {
+    text-align: center;
 }
 
 </style>

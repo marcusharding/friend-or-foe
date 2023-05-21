@@ -1,15 +1,17 @@
 <template>
-    <div class="flex-col fade-in">
-    <div v-if="!hasPartnerSelections">
-        <img class="gif" src="@/assets/images/mr-bean.gif" alt="" />
-        <h1>
-            Waiting for {{ partnerName }} to complete their answers...
-        </h1>
-    </div>
-    <div v-if="hasPartnerSelections" class="flex-col">
-        <img class="gif" :src="imagePath" alt="" />
-        <h1>{{ message }}</h1>
-    </div>
+    <div class="flex-col">
+        <!-- Make a component -->
+        <div v-if="!hasPartnerSelections" class="fade-in">
+            <img class="gif" src="@/assets/images/mr-bean.gif" alt="" />
+            <h1>
+                Waiting for {{ partnerName }} to complete their answers...
+            </h1>
+        </div>
+        <div :class="hasPartnerSelections ? 'flex' : 'hidden'" class="flex-col">
+            <h1 class="fade-in text-center" ref="heading">The results are in!</h1>
+            <img class="gif hidden" :src="imagePath" alt="" ref="gif" />
+            <h1 class="hidden" ref="messageContainer" >{{ message }}</h1>
+        </div>
     </div>
 </template>
 
@@ -46,7 +48,10 @@ const props = defineProps({
 // Reactive data
 const { updateState } = toRefs(props);
 const score = ref(0);
-const message = ref();
+const message = ref('');
+const messageContainer = ref(null);
+const heading = ref(null);
+const gif = ref(null);
 const imagePath = ref('');
 
 // Computed
@@ -57,16 +62,7 @@ const hasPartnerSelections = computed(() => {
 // Watchers
 watch(hasPartnerSelections, async (newValue, oldValue) => {
 
-    if ( newValue ) {
-        
-        calculateScore();
-        setMessage();
-
-        setTimeout(() => {
-
-            updateState.value('SUMMARY');
-        }, 2000);
-    }
+    if ( newValue ) { handleIntermission() }
 });
 
 // Methods
@@ -79,7 +75,6 @@ const calculateScore = () => {
                 e => e.selection === selection.selection
             ).length > 0 
         ) {
-
             score.value = score.value += 1;
         }
     });
@@ -133,12 +128,23 @@ const getMessage = value => {
     return text;
 }
 
-// Created
-if ( hasPartnerSelections.value ) {
+const handleIntermission = () => {
 
     calculateScore();
     setMessage();
+    setTimeout(() => heading.value.classList.add('opacity-0', 'fade-out'), 2000);
+    setTimeout(() => { 
+        gif.value.classList.remove('hidden');
+        gif.value.classList.add('block', 'fade-in');
+    }, 2500);
+    setTimeout(() => {
+        messageContainer.value.classList.remove('hidden');
+        messageContainer.value.classList.add('block', 'fade-in');
+    }, 2500);
+    setTimeout(() => updateState.value('SUMMARY'), 6000);
 }
 
+// Created
+if ( hasPartnerSelections.value ) { handleIntermission() }
 
 </script>

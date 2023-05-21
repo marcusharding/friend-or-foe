@@ -1,7 +1,7 @@
 <template>
     <div class="partner-join flex-col fade-in">
         <h1 class="heading">Waiting for a guest to join...</h1>
-        <p class="subtitle">Have your guest scan the below QR Code on another mobile device to join this session.</p>
+        <p class="subtitle">Have your guest scan the QR Code on another mobile device to join this session.</p>
         <img class="qr-code" :src="qrCode" alt="" />
     </div>
 </template>
