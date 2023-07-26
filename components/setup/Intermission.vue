@@ -53,13 +53,14 @@ const imagePath = ref('');
 
 // Computed
 const hasPartnerSelections = computed(() => {
+
     return partnerSelections.value.length > 0;
 });
 
 // Watchers
 watch(hasPartnerSelections, async (newValue, oldValue) => {
 
-    if ( newValue ) { handleIntermission() }
+    if ( newValue ) handleIntermission();
 });
 
 // Methods
@@ -67,11 +68,8 @@ const calculateScore = () => {
 
     userSelections.value.forEach(selection => {
 
-        if (
-            partnerSelections.value.filter(
-                e => e.selection === selection.selection
-            ).length > 0 
-        ) {
+        if ( partnerSelections.value.filter(e => e.selection === selection.selection).length > 0 ) {
+
             score.value = score.value += 1;
         }
     });
@@ -112,15 +110,9 @@ const getMessage = value => {
         return obj.value === value;
     });
 
-    if ( object && host.value ) {
+    if ( object && host.value ) text = object[0].hostText;
 
-        text = object[0].hostText;
-    }
-
-    if ( object && !host.value ) {
-
-        text = object[0].guestText;
-    }
+    if ( object && !host.value ) text = object[0].guestText;
 
     return text;
 }
@@ -129,19 +121,26 @@ const handleIntermission = () => {
 
     calculateScore();
     setMessage();
+
     setTimeout(() => heading.value.classList.add('opacity-0', 'fade-out'), 2000);
+    setTimeout(() => updateState.value('SUMMARY'), 6000);
+
     setTimeout(() => { 
+
         gif.value.classList.remove('hidden');
         gif.value.classList.add('block', 'fade-in');
+
     }, 2500);
+
     setTimeout(() => {
+
         messageContainer.value.classList.remove('hidden');
         messageContainer.value.classList.add('block', 'fade-in');
+
     }, 2500);
-    setTimeout(() => updateState.value('SUMMARY'), 6000);
 }
 
 // Created
-if ( hasPartnerSelections.value ) { handleIntermission() }
+if ( hasPartnerSelections.value ) handleIntermission();
 
 </script>

@@ -10,15 +10,9 @@ export const useUserStore = defineStore({
         }
     },
     actions: {
-        updateHost(value: boolean) {
-            this._host = value;
-        },
-        updateName(value: string) {
-            this._name = value;
-        },
-        updatePartnerName(value: string) {
-            this._partnerName = value
-        }
+        updateHost(value: boolean) { this._host = value },
+        updateName(value: string) { this._name = value },
+        updatePartnerName(value: string) { this._partnerName = value }
     },
     getters: {
         host: state => state._host,

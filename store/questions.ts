@@ -11,22 +11,10 @@ export const useQuestionsStore = defineStore({
         }
     },
     actions: {
-        updateAvailableQuestions(value: any) {
-
-            this._availableQuestions = value;
-        },
-        updateCurrentQuestions(value: any) {
-
-            this._currentQuestions = value;
-        },
-        updateUserSelections(value: any) {
-
-            this._userSelections = value;
-        },
-        updatePartnerSelections(value: any) {
-
-            this._partnerSelections = value;
-        }
+        updateAvailableQuestions(value: any) { this._availableQuestions = value },
+        updateCurrentQuestions(value: any) { this._currentQuestions = value },
+        updateUserSelections(value: any) { this._userSelections = value },
+        updatePartnerSelections(value: any) { this._partnerSelections = value }
     },
     getters: {
         availableQuestions: state => state._availableQuestions,

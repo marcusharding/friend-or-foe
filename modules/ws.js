@@ -13,7 +13,7 @@ io.on('connection', async socket => {
     socket.on('room_join', room => {
     
         socket.join(room);
-        console.log('socket: ', socketId, ' has joined the room.')
+        console.log('socket: ', socketId, ' has joined the room.');
 
         // Broadcast number of room occupants
         io.sockets.emit('room_occupants', getRoomSize(room));
@@ -28,14 +28,10 @@ io.on('connection', async socket => {
         if ( io.sockets.adapter.rooms.get(room) ) {
 
             // Room has space
-            if ( getRoomSize(room) < 2 ) {
-                socket.emit('room_space');
-            }
+            if ( getRoomSize(room) < 2 ) socket.emit('room_space');
 
             // Room is full
-            if ( getRoomSize(room) === 2 ) {
-                socket.emit('room_full');
-            }
+            if ( getRoomSize(room) === 2 ) socket.emit('room_full');
 
         } else {
 
@@ -65,23 +61,19 @@ io.on('connection', async socket => {
     // Socket disconnection
     socket.on('disconnect', reason => {
 
-        console.log('socket disconnected: ', reason);
-
         // Broadcast that user has disconnected
         io.sockets.emit('socket_disconnected', reason);
+
+        console.log('socket disconnected: ', reason);
     });
 });
 
-const getRoomSize = room => {
-    return io.sockets.adapter.rooms.get(room).size;
-}
+const getRoomSize = room => { return io.sockets.adapter.rooms.get(room).size }
 
 export default defineNuxtModule({
+    
     setup (options, nuxt) {
 
-        nuxt.hook('listen', async server => {
-            
-            io.attach(server);
-        });
+        nuxt.hook('listen', async server => io.attach(server));
     }
 });

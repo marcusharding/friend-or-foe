@@ -64,20 +64,12 @@ const { name } = storeToRefs(userStore);
 // Watchers
 watch(occupants, async (newAmount, oldAmount) => {
 
-    if ( newAmount === 1 ) {
-        state.value = STATES.WAITING_FOR_GUEST;
-    }
-
-    if ( newAmount === 2 ) {
-        state.value = STATES.ROOM_READY;
-    }
+    if ( newAmount === 1 ) state.value = STATES.WAITING_FOR_GUEST;
+    if ( newAmount === 2 ) state.value = STATES.ROOM_READY;
 });
 
 // Methods
-const getQrCode = async () => {
-
-    qrCode.value = await generateQr(location.href);
-}
+const getQrCode = async () => qrCode.value = await generateQr(location.href);
 
 const createSocket = () => {
 
@@ -105,34 +97,16 @@ const socketListeners = () => {
     socket.value.on('room_host', data => updateHost(data));
 
     // Commit partner name to store
-    socket.value.on('partner_name', data => {
-
-        if ( data !== name.value ) {
-
-            updatePartnerName(data);
-        }
-    });
+    socket.value.on('partner_name', data => { if ( data !== name.value ) updatePartnerName(data) });
 
     // Commit current questions to store
-    socket.value.on('current_questions', data => {
-        
-        updateCurrentQuestions(data);
-    });
+    socket.value.on('current_questions', data => updateCurrentQuestions(data) );
 
     // Commit partners selections
-    socket.value.on('user_selections', data => {
-
-        if ( data.user !== name.value ) {
-
-            updatePartnerSelections(data.selections);
-        }
-    });
+    socket.value.on('user_selections', data => { if ( data.user !== name.value ) updatePartnerSelections(data.selections) });
 
     // Socket disconnected
-    socket.value.on('socket_disconnected', () => {
-
-        state.value = STATES.DISCONNECTED;
-    });
+    socket.value.on('socket_disconnected', () => state.value = STATES.DISCONNECTED );
 }
 
 const socketEmits = (event, data) => {

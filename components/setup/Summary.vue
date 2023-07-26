@@ -57,10 +57,7 @@ const questionsStore = useQuestionsStore();
 const userStore = useUserStore();
 const { partnerSelections, userSelections } = storeToRefs(questionsStore);
 const { partnerName } = storeToRefs(userStore);
-const {
-    updateUserSelections,
-    updatePartnerSelections 
-} = questionsStore;
+const { updateUserSelections, updatePartnerSelections } = questionsStore;
 
 // Props
 const props = defineProps({
@@ -71,14 +68,12 @@ const props = defineProps({
 const score = ref(0);
 
 // Computed
-const hasPartnerSelections = computed(() => {
-    return partnerSelections.value.length > 0;
-});
+const hasPartnerSelections = computed(() => { return partnerSelections.value.length > 0 });
 
 // Watchers
 watch(hasPartnerSelections, async (newValue, oldValue) => {
 
-    if ( newValue ) { calculateScore() }
+    if ( newValue ) calculateScore();
 });
 
 // Methods
@@ -86,11 +81,7 @@ const calculateScore = () => {
 
     userSelections.value.forEach(selection => {
 
-        if (
-            partnerSelections.value.filter(
-                e => e.selection === selection.selection
-            ).length > 0 
-        ) {
+        if ( partnerSelections.value.filter(e => e.selection === selection.selection).length > 0 ) {
 
             score.value = score.value += 1;
         }
@@ -101,11 +92,7 @@ const getAnswerClass = selection => {
 
     let className = 'wrong';
 
-    if (
-        partnerSelections.value.filter(
-            e => e.selection === selection
-        ).length > 0 
-    ) {
+    if ( partnerSelections.value.filter(e => e.selection === selection).length > 0 ) {
 
         className = 'correct';
     }
@@ -114,7 +101,7 @@ const getAnswerClass = selection => {
 }
 
 // Created
-if ( hasPartnerSelections.value ) { calculateScore() }
+if ( hasPartnerSelections.value ) calculateScore();
 
 </script>
 

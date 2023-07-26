@@ -73,10 +73,7 @@ const generateQuestions = () => {
     // Remove the questions we just chose to use from selection pool
     current.forEach(question => {
 
-        if ( questions.includes(question) ) {
-
-            questions.splice(questions.indexOf(question), 1);
-        }
+        if ( questions.includes(question) ) questions.splice(questions.indexOf(question), 1);
     });
 
     // Now commit the remaining questions back to the store
@@ -92,24 +89,16 @@ const updateSelection = (question, selection) => {
     }
 
     // If a selection doesnt exist yet push new object to the array
-    if ( findIndex(question.id) === -1 ) {
-
-        selections.value.push(object);
-    }
+    if ( findIndex(question.id) === -1 ) selections.value.push(object);
 
     // If one does exist overwrite the previous selection
-    if ( findIndex(question.id) !== -1 ) {
-
-        selections.value[findIndex(question.id)] = object;
-    }
+    if ( findIndex(question.id) !== -1 ) selections.value[findIndex(question.id)] = object;
 }
 
-const findIndex = id => {
-    return selections.value.findIndex(selection => selection.id === id);
-}
+const findIndex = id => { return selections.value.findIndex(selection => selection.id === id) }
 
 // Created
-if ( host.value ) { generateQuestions(); }
+if ( host.value ) generateQuestions();
 
 // Lifecylce Hooks
 onMounted(() => {

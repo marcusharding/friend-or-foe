@@ -57,10 +57,7 @@ const formatQuestion = text => {
 
     let formatted = text;
 
-    if ( formatted.includes('[insert name]') ) {
-
-        formatted = formatted.replace('[insert name]', partnerName.value);
-    }
+    if ( formatted.includes('[insert name]') ) formatted = formatted.replace('[insert name]', partnerName.value);
 
     return formatted;
 }
@@ -69,10 +66,7 @@ const onClickOption = event => {
 
     const refs = options.value.querySelectorAll('.option');
 
-    refs.forEach(option => {
-
-        option.classList.remove('active');
-    });
+    refs.forEach(option => option.classList.remove('active'));
 
     event.classList.add('active');
 }

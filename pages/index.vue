@@ -45,10 +45,7 @@ const setDevice = () => {
     }
 }
 
-const getQrCode = async () => {
-
-    qrCode.value = await generateQr(location.href);
-}
+const getQrCode = async () => qrCode.value = await generateQr(location.href);
 
 // Lifecylce Hooks
 onMounted(() => {
