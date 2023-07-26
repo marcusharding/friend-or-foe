@@ -1,9 +1,0 @@
-/**
- * FUNCTIONS
- */
-
-$font-base: 16; // px
-
-@function rem($target: 16) {
-    @return unquote(calc($target / $font-base) + "rem")
-}
