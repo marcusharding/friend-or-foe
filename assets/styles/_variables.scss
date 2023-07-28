@@ -1,0 +1,20 @@
+$color: (
+    TrueBlack: #000000,
+    TrueWhite: #FFFFFF,
+    OffWhite: #f8f8ff,
+    OffBlack: #161a1d,
+    OffGrey: #313033,
+    LightGrey: #ECECEA,
+    LightBlue: #BDBDC6,
+    HotPink: #f09
+);
+
+$font-base: 16; // px
+
+@function color($key, $alpha: 1) {
+	@return rgba(map-get($color, $key), $alpha);
+}
+
+@function rem($target: 16) {
+    @return unquote(calc($target / $font-base) + "rem");
+}

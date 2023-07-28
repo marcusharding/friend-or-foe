@@ -16,6 +16,12 @@ export default {
         ]
     },
 
+    css: [
+        '~/assets/styles/global.scss',
+    ],
+
+    components: true,
+
     modules: [
         '~/modules/ws',
     ],
