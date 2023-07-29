@@ -1,15 +1,15 @@
 // Modules.
-const WebSocket = require('ws');
-const uuid = require('uuid');
+const { Server } = require('socket.io');
+const io = new Server();
 
 // Helpers
-const wsServer = new WebSocket.Server({ noServer: true });
-const uuidv4 = uuid.v4;
+// const wsServer = new WebSocket.Server({ noServer: true });
+// const uuidv4 = uuid.v4;
 
 // Socket connection
-wsServer.on('connection', async socket => {
+io.on('connection', async socket => {
 
-    const socketId = uuidv4();
+    const socketId = socket.client.id;
     console.log('socket: ', socketId, ' has connected.');
 
     // Join room by id
@@ -71,15 +71,9 @@ wsServer.on('connection', async socket => {
     });
 });
 
-const getRoomSize = room => { return wsServer.sockets.adapter.rooms.get(room).size }
+const getRoomSize = room => { return io.sockets.adapter.rooms.get(room).size }
 
 export default function() {
 
-    this.nuxt.hook('listen', server => {
-
-        server.on('upgrade', (req, socket, head) => {
-
-            wsServer.handleUpgrade(req, socket, head, s => wsServer.emit('connection', s) );
-        });
-    });
+    this.nuxt.hook('listen', server => io.attach(server));
 };

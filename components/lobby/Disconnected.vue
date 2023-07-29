@@ -18,13 +18,13 @@ export default {
     methods: {
         wipeStore() {
 
-            this.$store.dispatch('updateHost', false);
-            this.$store.dispatch('updatePartnerName', '');
-            this.$store.dispatch('updateName', '');
-            this.$store.dispatch('updateAvailableQuestions', []);
-            this.$store.dispatch('updateCurrentQuestions', []);
-            this.$store.dispatch('updateUserSelections', []);
-            this.$store.dispatch('updatePartnerSelections', []);
+            this.$store.commit('user/updateHost', false);
+            this.$store.commit('user/updatePartnerName', '');
+            this.$store.commit('user/updateName', '');
+            this.$store.commit('questions/updateAvailableQuestions', []);
+            this.$store.commit('questions/updateCurrentQuestions', []);
+            this.$store.commit('questions/updateUserSelections', []);
+            this.$store.commit('questions/updatePartnerSelections', []);
         }
     }
 }

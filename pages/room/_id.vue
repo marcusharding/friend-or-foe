@@ -15,6 +15,7 @@ import { generateQr } from '~/assets/utils/helpers';
 
 // Modules.
 import { mapState } from 'vuex';
+import { io } from 'socket.io-client';
 
 // Data
 import { questions } from '~/data/questions.js';
@@ -74,25 +75,25 @@ export default {
             this.socket.on('room_full', () => this.state = this.states.ROOM_FULL);
 
             // Room has space
-            this.socket.on('room_space', () => joinRoom());
+            this.socket.on('room_space', () => this.joinRoom());
 
             // Room is empty
-            this.socket.on('room_empty', () => joinRoom());
+            this.socket.on('room_empty', () => this.joinRoom());
 
             // Room occupants
             this.socket.on('room_occupants', data => this.occupants = data);
 
             // Room host
-            this.socket.on('room_host', data => updateHost(data));
+            this.socket.on('room_host', data => this.$store.commit('user/updateHost', data));
 
             // Commit partner name to store
-            this.socket.on('partner_name', data => { if ( data !== this.name ) this.$store.dispatch('updatePartnerName', data)});
+            this.socket.on('partner_name', data => { if ( data !== this.name ) this.$store.commit('user/updatePartnerName', data)});
 
             // Commit current questions to store
-            this.socket.on('current_questions', data => this.$store.dispatch('updateCurrentQuestions', data));
+            this.socket.on('current_questions', data => this.$store.commit('questions/updateCurrentQuestions', data));
 
             // Commit partners selections
-            this.socket.on('user_selections', data => { if ( data.user !== this.name ) this.$store.dispatch('updatePartnerSelections', data.selections)});
+            this.socket.on('user_selections', data => { if ( data.user !== this.name ) this.$store.commit('questions/updatePartnerSelections', data.selections)});
 
             // Socket disconnected
             this.socket.on('socket_disconnected', () => this.state = this.states.DISCONNECTED );
@@ -104,25 +105,25 @@ export default {
                 case 'room_full_check':
                     
                     // Is room full
-                    this.socket.send('room_full_check', data);
+                    this.socket.emit('room_full_check', data);
                     break;
 
                 case 'user_name':
 
                     // Emit user name
-                    this.socket.send('user_name', data);
+                    this.socket.emit('user_name', data);
                     break;
                 
                 case 'set_current_questions':
 
                     // Emit current questions
-                    this.socket.send('set_current_questions', data);
+                    this.socket.emit('set_current_questions', data);
                     break;
 
                 case 'selections':
 
                     // Emit users selections
-                    this.socket.send('set_user_selections', 
+                    this.socket.emit('set_user_selections', 
                         {
                             selections: data,
                             user: this.name
@@ -135,11 +136,14 @@ export default {
 
             // Join room by id
             this.socket.emit('room_join', this.roomId);
+            this.$store.commit('questions/updateAvailableQuestions', questions);
         },
         createSocket() {
 
-            this.socket = new WebSocket(`${ process.env.WEBSOCKET_PROTOCOL }://${ location.host }`);
-            this.$store.dispatch('updateAvailableQuestions', questions);
+            this.socket = io(`${ process.env.WEBSOCKET_PROTOCOL }://${ location.host }`, {
+                withCredentials: false,
+                transports: ['websocket']
+            });
             this.socketEmits('room_full_check', this.roomId);
             this.socketListeners();
         },
