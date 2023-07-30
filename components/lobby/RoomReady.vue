@@ -1,22 +1,20 @@
 <template>
-    <Transition>
-        <EnterName 
-            v-if="state === states.ENTER_NAME" 
-            :updateState="updateState"
-            :socketEmits="socketEmits"
-        />
-        <Instructions
-            v-if="state === states.INSTRUCTIONS"
-            :updateState="updateState"
-        />
-        <Questions 
-            v-if="state === states.QUESTIONS" 
-            :socketEmits="socketEmits"
-            :updateState="updateState"
-        />
-        <Intermission v-if="state === states.INTERMISSION" :updateState="updateState" />
-        <Summary v-if="state === states.SUMMARY" :updateState="updateState" />
-    </Transition>
+    <EnterName 
+        v-if="state === states.ENTER_NAME" 
+        :updateState="updateState"
+        :socketEmits="socketEmits"
+    />
+    <Instructions
+        v-else-if="state === states.INSTRUCTIONS"
+        :updateState="updateState"
+    />
+    <Questions 
+        v-else-if="state === states.QUESTIONS" 
+        :socketEmits="socketEmits"
+        :updateState="updateState"
+    />
+    <Intermission v-else-if="state === states.INTERMISSION" :updateState="updateState" />
+    <Summary v-else-if="state === states.SUMMARY" :updateState="updateState" />
 </template>
 
 <script>

@@ -41,7 +41,6 @@ export default {
             imagePath: ''
         }
     },
-    created() { if ( this.hasPartnerSelections ) this.handleIntermission() },
     computed: {
         ...mapState({
             partnerSelections: state => state.questions.partnerSelections,
@@ -49,12 +48,6 @@ export default {
             host: state => state.user.host,
         }),
         hasPartnerSelections() { return this.partnerSelections.length > 0 }
-    },
-    watch: {
-        hasPartnerSelections: function (newValue, oldValue) {
-
-            if ( newValue ) handleIntermission();
-        }
     },
     methods: {
         calculateScore() {
@@ -72,22 +65,22 @@ export default {
             switch( this.score ) {
 
                 case 0:
-                    this.message = getMessage(this.score);
+                    this.message = this.getMessage(this.score);
                     this.imagePath = shocked;
                     break;
 
                 case 1:
-                    this.message = getMessage(this.score);
+                    this.message = this.getMessage(this.score);
                     this.imagePath = confused;
                     break;
 
                 case 2:
-                    this.message = getMessage(this.score);
+                    this.message = this.getMessage(this.score);
                     this.imagePath = unimpressed;
                     break;
 
                 case 3:
-                    this.message = getMessage(this.score);
+                    this.message = this.getMessage(this.score);
                     this.imagePath = hug;
                     break;
             }
@@ -109,11 +102,11 @@ export default {
         },
         handleIntermission() {
 
-            calculateScore();
-            setMessage();
+            this.calculateScore();
+            this.setMessage();
 
             setTimeout(() => this.$refs.heading.classList.add('opacity-0', 'fade-out'), 2000);
-            setTimeout(() => this.updateState.value('SUMMARY'), 6000);
+            setTimeout(() => this.updateState('SUMMARY'), 6000);
 
             setTimeout(() => { 
 
@@ -129,7 +122,14 @@ export default {
 
             }, 2500);
         }
-    }
+    },
+    watch: {
+        hasPartnerSelections: function (newValue, oldValue) {
+
+            if ( newValue ) this.handleIntermission();
+        }
+    },
+    created() { if ( this.hasPartnerSelections ) this.handleIntermission() }
 }
 
 </script>
