@@ -8,8 +8,8 @@ export const state = () => ({
 
 export const mutations = {
 
-    updateAvailableQuestions(value) { state.availableQuestions = value },
-    updateCurrentQuestions(value) { state.currentQuestions = value },
-    updateUserSelections(value) { state.userSelections = value },
-    updatePartnerSelections(value) { state.partnerSelections = value }
+    updateAvailableQuestions(state, value) { state.availableQuestions = value },
+    updateCurrentQuestions(state, value) { state.currentQuestions = value },
+    updateUserSelections(state, value) { state.userSelections = value },
+    updatePartnerSelections(state, value) { state.partnerSelections = value }
 }

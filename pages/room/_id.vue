@@ -1,9 +1,9 @@
 <template>
     <Transition>
-        <!-- <RoomReady v-if="state === states.ROOM_READY" :socketEmits="socketEmits" /> -->
+        <RoomReady v-if="state === states.ROOM_READY" :socketEmits="socketEmits" />
         <PartnerJoin v-if="state === states.WAITING_FOR_GUEST" :qrCode="qrCode" />
         <RoomFull v-if="state === states.ROOM_FULL" />
-        <Disconnected v-if="state === states.DISCONNECTED" />
+        <Disconnected v-if="state === states.DISCONNECTED" :nukeSocket="nukeSocket" />
         <Loading v-if="state === states.LOADING" />
     </Transition>
 </template>
@@ -55,7 +55,7 @@ export default {
     },
     computed: {
         ...mapState({
-            name: state => state.name,
+            name: state => state.user.name,
         }),
         states() { return STATES },
         roomId() { return $nuxt.$route.params.id }
@@ -135,8 +135,8 @@ export default {
         joinRoom() {
 
             // Join room by id
-            this.socket.emit('room_join', this.roomId);
             this.$store.commit('questions/updateAvailableQuestions', questions);
+            this.socket.emit('room_join', this.roomId);
         },
         createSocket() {
 
@@ -147,6 +147,7 @@ export default {
             this.socketEmits('room_full_check', this.roomId);
             this.socketListeners();
         },
+        nukeSocket() { if ( this.socket ) this.socket.disconnect() }
     },
     mounted() {
 

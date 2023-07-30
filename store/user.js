@@ -7,7 +7,7 @@ export const state = () => ({
 
 export const mutations = {
 
-    updateHost(value) { state.host = value },
-    updateName(value) { state.name = value },
-    updatePartnerName(value) { state.partnerName = value },
+    updateHost(state, value) { state.host = value },
+    updateName(state, value) { state.name = value },
+    updatePartnerName(state, value) { state.partnerName = value },
 }

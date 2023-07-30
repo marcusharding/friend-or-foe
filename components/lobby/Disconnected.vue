@@ -1,12 +1,8 @@
 <template>
     <div class="disconnected flex-col fade-in">
         <h1 class="heading">Oops, your partner has disconnected from the game.</h1>
-        <NuxtLink 
-            to="/" 
-            class="button" 
-            @click="wipeStore();"
-        >
-            Start again
+        <NuxtLink to="/">
+            <Button class="button" @click="wipeStore">Start again</Button>
         </NuxtLink>
     </div>
 </template>
@@ -15,6 +11,9 @@
 
 export default {
     name: 'Disconnected',
+    props: {
+        nukeSocket: { type: Function, default: () => {} }
+    },
     methods: {
         wipeStore() {
 
@@ -25,6 +24,7 @@ export default {
             this.$store.commit('questions/updateCurrentQuestions', []);
             this.$store.commit('questions/updateUserSelections', []);
             this.$store.commit('questions/updatePartnerSelections', []);
+            this.nukeSocket();
         }
     }
 }
