@@ -71,12 +71,6 @@ export default {
         }),
         hasPartnerSelections() { return this.partnerSelections.length > 0 }
     },
-    watch: {
-        hasPartnerSelections: function (newValue, oldValue) {
-
-            if ( newValue ) this.calculateScore();
-        }
-    },
     methods: {
         calculateScore() {
 
@@ -98,10 +92,9 @@ export default {
             }
 
             return className;
-        },
-        created() { if ( this.hasPartnerSelections ) calculateScore() },
-        mounted() { if ( this.hasPartnerSelections ) calculateScore() }
-    }
+        }
+    },
+    created() { if ( this.hasPartnerSelections ) this.calculateScore() }
 }
 
 </script>

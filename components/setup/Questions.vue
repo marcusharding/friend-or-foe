@@ -22,6 +22,7 @@
         >
             Submit
         </button>
+        <div v-if="!swiper" class="loading"><Loading /></div>
     </div>
 </template>
 
@@ -37,12 +38,14 @@ import 'swiper/swiper.min.css';
 // Components
 import Question from '../ui/Question.vue';
 import Waiting from '../ui/Waiting.vue';
+import Loading from '../ui/Loading.vue';
 
 export default {
     name: 'Questions',
     components: {
         Waiting,
-        Question
+        Question,
+        Loading
     },
     props: {
         socketEmits: { type: Function, default: () => {} },
@@ -105,9 +108,13 @@ export default {
             });
         }
     },
-    watch: { currentQuestions(newValue, oldValue) { this.initSwiper() } },
-    created() { if ( this.host ) this.generateQuestions() },
-    // mounted() { this.initSwiper() }
+    watch: { 
+        currentQuestions(newValue, oldValue) {
+
+            setTimeout(() => { this.initSwiper() }, 1000);
+        } 
+    },
+    created() { if ( this.host ) this.generateQuestions() }
 }
 
 </script>
@@ -121,6 +128,18 @@ export default {
 
 p {
     text-align: center;
+}
+
+.loading {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: #161a1d;
 }
 
 </style>
